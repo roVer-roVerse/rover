@@ -1,0 +1,18 @@
+conda create -n light-eval python==3.11
+conda activate light-eval
+pip install lighteval accelerate flash_attn vllm ray nvitop
+
+MODEL=HuggingFaceTB/SmolLM2-135M
+MODEL=TinyPixel/small-1
+mkdir -p ./evals/$MODEL
+
+# --model_args "vllm,pretrained=$MODEL,dtype=bfloat16,gpu_memory_utilisation=0.95" \
+# enforce_eager=True
+curl https://raw.githubusercontent.com/huggingface/lighteval/refs/heads/main/examples/tasks/recommended_set.txt > recommended_set.txt
+TASK="leaderboard|truthfulqa:mc|0|0"
+TASK=evals/lighteval/recommended_set.txt
+lighteval accelerate \
+    --model_args "pretrained=$MODEL,dtype=bfloat16" \
+    --tasks "$TASK" \
+    --override_batch_size 8 \
+    --output_dir="./evals/$MODEL"

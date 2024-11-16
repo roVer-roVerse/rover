@@ -1,0 +1,19 @@
+packaging
+ninja
+loguru
+fire
+tensorboard
+nvitop
+py-cpuinfo # deepspeed needs this
+
+huggingface_hub
+hf_transfer
+transformers==4.46.2
+accelerate
+deepspeed
+trl
+peft
+datasets
+sentence-transformers
+
+einops
